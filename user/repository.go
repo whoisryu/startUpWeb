@@ -7,6 +7,7 @@ import (
 //RepositoryInterFace ...
 type RepositoryInterFace interface {
 	Save(user User) (User, error)
+	FindByEmail(email string) (User, error)
 }
 
 //Repository ...
@@ -26,5 +27,17 @@ func (r *Repository) Save(user User) (User, error) {
 	if err != nil {
 		return user, err
 	}
+	return user, nil
+}
+
+//FindByEmail finding user by email
+func (r *Repository) FindByEmail(email string) (User, error) {
+	var user User
+	err := r.db.Where("email = ?", email).Find(&user).Error
+
+	if err != nil {
+		return user, err
+	}
+
 	return user, nil
 }
